@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronDown, Cpu } from 'lucide-react';
 
 interface AIModel {
@@ -20,11 +20,7 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchModels();
-  }, []);
-
-  const fetchModels = async () => {
+  const fetchModels = useCallback(async () => {
     try {
       const response = await fetch('/api/models');
       const data = await response.json();
@@ -39,7 +35,11 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedModel, onModelChange]);
+
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
 
   const selectedModelData = models.find(model => model.id === selectedModel);
 
