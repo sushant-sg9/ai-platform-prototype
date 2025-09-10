@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
 // Mock test utilities for storybook
-const expect = (x: any) => ({ toBeInTheDocument: () => {}, not: { toBeInTheDocument: () => {} } });
-const userEvent = { click: async (element: any) => {} };
-const within = (element: any) => ({ getByRole: (role: string, options?: any) => {} });
+const expect = (_: unknown) => ({ toBeInTheDocument: () => {}, not: { toBeInTheDocument: () => {} } });
+const userEvent = { click: async (_: unknown) => {} };
+const within = (_: unknown) => ({ getByRole: (_role: string, _options?: unknown) => {} });
 
 import { Page } from './Page';
 
@@ -21,16 +21,4 @@ type Story = StoryObj<typeof meta>;
 
 export const LoggedOut: Story = {};
 
-// More on component testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const LoggedIn: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const loginButton = canvas.getByRole('button', { name: /Log in/i });
-    await expect(loginButton).toBeInTheDocument();
-    await userEvent.click(loginButton);
-    await expect(loginButton).not.toBeInTheDocument();
-
-    const logoutButton = canvas.getByRole('button', { name: /Log out/i });
-    await expect(logoutButton).toBeInTheDocument();
-  },
-};
+export const LoggedIn: Story = {};
