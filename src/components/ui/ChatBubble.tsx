@@ -13,6 +13,8 @@ interface ChatBubbleProps {
   onRegenerate?: () => void;
   onDownload?: () => void;
   className?: string;
+  isStreaming?: boolean;
+  showCursor?: boolean;
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({
@@ -23,7 +25,9 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
   onCopy,
   onRegenerate,
   onDownload,
-  className = ''
+  className = '',
+  isStreaming = false,
+  showCursor = true,
 }) => {
   const [showActions, setShowActions] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -99,7 +103,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
         </div>
 
         <div className="prose prose-sm max-w-none">
-          <p className="whitespace-pre-wrap">{content}</p>
+          <p className="whitespace-pre-wrap">
+            {content}
+            {isStreaming && showCursor && (
+              <span className="animate-pulse text-blue-600 dark:text-blue-400 font-bold">|</span>
+            )}
+          </p>
         </div>
 
         {!isUser && (showActions || copied) && (
