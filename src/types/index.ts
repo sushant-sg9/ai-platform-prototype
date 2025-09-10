@@ -1,5 +1,14 @@
-// Re-export API types
-export type { AIModel } from '@/app/api/models/route';
+import React from 'react';
+
+// Define API types locally to avoid build issues during deployment
+export interface AIModel {
+  id: string;
+  name: string;
+  provider: string;
+  description: string;
+  maxTokens: number;
+  supportedFeatures: string[];
+}
 
 // Define PromptTemplate interface locally to avoid build issues
 export interface PromptTemplate {
@@ -91,6 +100,32 @@ export interface ModalProps {
   title: string;
   children: React.ReactNode;
   className?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  showCloseButton?: boolean;
+}
+
+export interface ChatBubbleProps {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: Date;
+  model?: string;
+  onCopy?: () => void;
+  onRegenerate?: () => void;
+  onDownload?: () => void;
+  className?: string;
+}
+
+export interface PromptEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: (prompt: string) => void;
+  isLoading?: boolean;
+  placeholder?: string;
+}
+
+export interface ModelSelectorProps {
+  selectedModel: string;
+  onModelChange: (modelId: string) => void;
 }
 
 // API Response types
