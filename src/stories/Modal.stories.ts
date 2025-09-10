@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import Modal from '../components/ui/Modal';
-import { fn } from '@storybook/test';
+// Mock function for storybook actions
+const fn = () => () => {};
 
 const meta: Meta<typeof Modal> = {
   title: 'UI/Modal',

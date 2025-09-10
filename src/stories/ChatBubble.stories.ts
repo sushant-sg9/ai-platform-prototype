@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import ChatBubble from '../components/ui/ChatBubble';
-import { fn } from '@storybook/test';
+// Mock function for storybook actions
+const fn = () => () => {};
 
 const meta: Meta<typeof ChatBubble> = {
   title: 'UI/ChatBubble',

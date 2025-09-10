@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import Slider from '../components/ui/Slider';
-import { fn } from '@storybook/test';
+// Mock function for storybook actions
+const fn = () => () => {};
 
 const meta: Meta<typeof Slider> = {
   title: 'UI/Slider',

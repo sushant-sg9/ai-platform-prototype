@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-import { fn } from 'storybook/test';
+// Mock function for storybook actions
+const fn = () => () => {};
 
 import { Header } from './Header';
 
