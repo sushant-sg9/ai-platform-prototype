@@ -1,6 +1,20 @@
 // Re-export API types
 export type { AIModel } from '@/app/api/models/route';
-export type { PromptTemplate } from '@/app/api/templates/route';
+
+// Define PromptTemplate interface locally to avoid build issues
+export interface PromptTemplate {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  prompt: string;
+  parameters: {
+    temperature: number;
+    maxTokens: number;
+    topP: number;
+  };
+  tags: string[];
+}
 
 // Chat and message types
 export interface Message {

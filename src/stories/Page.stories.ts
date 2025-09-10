@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 
-// Mock test utilities for storybook
-const expect = (_: unknown) => ({ toBeInTheDocument: () => {}, not: { toBeInTheDocument: () => {} } });
-const userEvent = { click: async (_: unknown) => {} };
-const within = (_: unknown) => ({ getByRole: (_role: string, _options?: unknown) => {} });
-
 import { Page } from './Page';
 
 const meta = {
