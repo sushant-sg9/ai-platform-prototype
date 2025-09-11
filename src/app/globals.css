@@ -185,3 +185,41 @@
 .dark ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  /* Better touch targets */
+  button {
+    min-height: 44px;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+  
+  /* Better scrolling on mobile */
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Improved tap highlighting */
+  * {
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+  }
+}
+
+/* Ensure proper viewport behavior */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

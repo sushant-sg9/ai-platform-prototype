@@ -66,7 +66,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
     >
       <div
         className={`
-          max-w-3xl p-4 rounded-lg shadow-sm
+          max-w-full sm:max-w-2xl lg:max-w-3xl p-3 sm:p-4 rounded-lg shadow-sm
           ${
             isUser
               ? 'bg-blue-600 text-white'
@@ -74,19 +74,19 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
           }
         `}
       >
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+        <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+            <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
               isUser ? 'bg-blue-700' : 'bg-gray-200 dark:bg-gray-700'
             }`}>
               {isUser ? (
-                <User className="w-4 h-4" />
+                <User className="w-3 h-3 sm:w-4 sm:h-4" />
               ) : (
-                <Bot className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400" />
               )}
             </div>
             
-            <span className={`text-sm font-medium ${
+            <span className={`text-xs sm:text-sm font-medium truncate ${
               isUser ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'
             }`}>
               {isUser ? 'You' : model || 'Assistant'}
@@ -94,10 +94,11 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
           </div>
           
           {timestamp && (
-            <span className={`text-xs ${
+            <span className={`text-xs flex-shrink-0 ml-2 ${
               isUser ? 'text-blue-200' : 'text-gray-500 dark:text-gray-500'
             }`}>
-              {timestamp.toLocaleTimeString()}
+              <span className="hidden sm:inline">{timestamp.toLocaleTimeString()}</span>
+              <span className="sm:hidden">{timestamp.toLocaleTimeString().split(':').slice(0, 2).join(':')}</span>
             </span>
           )}
         </div>
@@ -112,19 +113,19 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
         </div>
 
         {!isUser && (showActions || copied) && (
-          <div className="flex items-center gap-2 mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-2 sm:mt-3 pt-2 border-t border-gray-200 dark:border-gray-600">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCopy}
-              className={`text-xs ${
+              className={`text-xs p-1.5 sm:p-2 ${
                 copied 
                   ? 'text-green-600 dark:text-green-400' 
                   : 'text-gray-500 dark:text-gray-400'
               }`}
             >
-              <Copy className="w-3 h-3 mr-1" />
-              {copied ? 'Copied!' : 'Copy'}
+              <Copy className="w-3 h-3 mr-0.5 sm:mr-1" />
+              <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
             </Button>
             
             {onRegenerate && (
@@ -132,10 +133,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={onRegenerate}
-                className="text-xs text-gray-500 dark:text-gray-400"
+                className="text-xs text-gray-500 dark:text-gray-400 p-1.5 sm:p-2"
               >
-                <RotateCcw className="w-3 h-3 mr-1" />
-                Regenerate
+                <RotateCcw className="w-3 h-3 mr-0.5 sm:mr-1" />
+                <span className="hidden sm:inline">Regenerate</span>
               </Button>
             )}
             
@@ -143,10 +144,10 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({
               variant="ghost"
               size="sm"
               onClick={handleDownload}
-              className="text-xs text-gray-500 dark:text-gray-400"
+              className="text-xs text-gray-500 dark:text-gray-400 p-1.5 sm:p-2"
             >
-              <Download className="w-3 h-3 mr-1" />
-              Download
+              <Download className="w-3 h-3 mr-0.5 sm:mr-1" />
+              <span className="hidden sm:inline">Download</span>
             </Button>
           </div>
         )}

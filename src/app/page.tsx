@@ -20,6 +20,7 @@ function AIInterface() {
   });
   const [showParameters, setShowParameters] = useState(false);
   const [conversationCount, setConversationCount] = useState(1);
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
 
   // Start new conversation when model changes
   const handleModelChange = (newModel: string) => {
@@ -79,48 +80,53 @@ function AIInterface() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-all duration-500">
       {/* Enhanced Header */}
-      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-700/60 px-4 py-4 sticky top-0 z-40">
+      <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-700/60 px-3 sm:px-4 py-3 sm:py-4 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
-              <Bot className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+            <div className="p-1.5 sm:p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg sm:rounded-xl shadow-lg flex-shrink-0">
+              <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                AI Platform Prototype
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent truncate">
+                <span className="hidden sm:inline">AI Platform Prototype</span>
+                <span className="sm:hidden">AI Platform</span>
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Conversation #{conversationCount} • {selectedModel}
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
+                <span className="hidden sm:inline">Conversation #{conversationCount} • {selectedModel}</span>
+                <span className="sm:hidden">#{conversationCount} • {selectedModel.split('-')[0]}</span>
               </p>
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            {/* New Chat Button - Icon only for all screens */}
             <Button
               variant="outline"
               size="sm"
               onClick={startNewConversation}
-              className="flex items-center gap-2 bg-white/50 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700 border-gray-300/50 dark:border-gray-600/50"
+              className="p-2 bg-white/50 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700 border-gray-300/50 dark:border-gray-600/50"
+              aria-label="New Chat"
             >
               <MessageSquare className="w-4 h-4" />
-              New Chat
             </Button>
             
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowParameters(!showParameters)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-0 sm:gap-2 p-2"
+              aria-label="Parameters"
             >
               <Settings className="w-4 h-4" />
-              Parameters
+              <span className="hidden sm:inline ml-0 sm:ml-0">Parameters</span>
             </Button>
             
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="flex items-center gap-2"
+              className="p-2"
+              aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4" />
@@ -132,30 +138,31 @@ function AIInterface() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto p-3 sm:p-4 lg:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {/* Enhanced Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-3 sm:space-y-4 lg:space-y-6">
             {/* Model Selector */}
-            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
+              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 Model Selection
               </h2>
               <ModelSelector
                 selectedModel={selectedModel}
                 onModelChange={handleModelChange}
+                onDropdownToggle={setIsModelDropdownOpen}
               />
             </div>
 
             {/* Enhanced Parameters Panel */}
             {showParameters && (
-              <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
-                <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 flex items-center gap-2">
+              <div className={`bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-300 ${isModelDropdownOpen ? 'mt-56 sm:mt-60 lg:mt-0' : ''}`}>
+                <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 sm:mb-4 flex items-center gap-2">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                   Parameters
                 </h2>
-                <div className="space-y-5">
+                <div className="space-y-3 sm:space-y-4 lg:space-y-5">
                   <div>
                     <label className="block text-sm text-gray-600 dark:text-gray-400 mb-1">
                       Temperature: {parameters.temperature}
@@ -206,34 +213,34 @@ function AIInterface() {
           </div>
 
           {/* Enhanced Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className={`lg:col-span-3 space-y-3 sm:space-y-4 lg:space-y-6 transition-all duration-300 ${isModelDropdownOpen ? 'mt-56 sm:mt-60 lg:mt-0' : ''}`}>
             {/* Enhanced Chat Area */}
-            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 h-[500px] flex flex-col overflow-hidden">
-              <div className="p-6 border-b border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-gray-800/50 dark:to-gray-900/50">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-md">
-                    <MessageSquare className="w-4 h-4 text-white" />
+            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg sm:rounded-xl border border-gray-200/50 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 h-[400px] sm:h-[450px] lg:h-[500px] flex flex-col overflow-hidden">
+              <div className="p-3 sm:p-4 lg:p-6 border-b border-gray-200/50 dark:border-gray-700/50 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-gray-800/50 dark:to-gray-900/50">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
+                  <div className="p-1.5 sm:p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-md">
+                    <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <div>
-                    <div>Conversation #{conversationCount}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 font-normal">
+                  <div className="min-w-0">
+                    <div className="truncate">Conversation #{conversationCount}</div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-normal truncate">
                       {messages.length > 0 ? `${messages.length} messages` : 'Start your conversation'}
                     </div>
                   </div>
                 </h2>
               </div>
               
-              <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-gradient-to-b from-transparent to-gray-50/30 dark:to-gray-900/30">
+              <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto space-y-3 sm:space-y-4 bg-gradient-to-b from-transparent to-gray-50/30 dark:to-gray-900/30">
                 {messages.length === 0 ? (
-                  <div className="text-center text-gray-500 dark:text-gray-400 mt-24 animate-fade-in">
-                    <div className="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl w-16 h-16 mx-auto mb-6 flex items-center justify-center shadow-xl">
-                      <Bot className="w-8 h-8 text-white" />
+                  <div className="text-center text-gray-500 dark:text-gray-400 mt-12 sm:mt-16 lg:mt-24 animate-fade-in px-4">
+                    <div className="p-3 sm:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 flex items-center justify-center shadow-xl">
+                      <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <h3 className="text-base sm:text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Ready to Chat!
                     </h3>
                     <p className="text-sm">
-                      Send a message to {selectedModel} using the prompt editor below
+                      Send a message to <span className="hidden sm:inline">{selectedModel}</span><span className="sm:hidden">{selectedModel.split('-')[0]}</span> using the prompt editor below
                     </p>
                   </div>
                 ) : (
@@ -244,7 +251,7 @@ function AIInterface() {
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <div
-                        className={`max-w-3xl p-4 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
+                        className={`max-w-full sm:max-w-2xl lg:max-w-3xl p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
                           message.role === 'user'
                             ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
                             : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200/50 dark:border-gray-700/50'
@@ -304,7 +311,7 @@ function AIInterface() {
             </div>
 
             {/* Enhanced Prompt Editor */}
-            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300">
+            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg sm:rounded-xl p-4 sm:p-5 lg:p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300">
               <PromptEditor
                 value={prompt}
                 onChange={setPrompt}

@@ -13,9 +13,10 @@ interface AIModel {
 interface ModelSelectorProps {
   selectedModel: string;
   onModelChange: (modelId: string) => void;
+  onDropdownToggle?: (isOpen: boolean) => void;
 }
 
-const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelChange }) => {
+const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelChange, onDropdownToggle }) => {
   const [models, setModels] = useState<AIModel[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -43,6 +44,10 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
 
   const selectedModelData = models.find(model => model.id === selectedModel);
 
+  useEffect(() => {
+    onDropdownToggle?.(isOpen);
+  }, [isOpen, onDropdownToggle]);
+
   if (loading) {
     return (
       <div className="animate-pulse">
@@ -55,26 +60,26 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="w-full flex items-center justify-between px-3 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors cursor-pointer"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <div className="flex items-center gap-3">
-          <Cpu className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          <div className="text-left">
-            <div className="font-medium text-gray-900 dark:text-white">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <Cpu className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+          <div className="text-left min-w-0">
+            <div className="font-semibold text-gray-900 dark:text-white text-sm truncate">
               {selectedModelData?.name || 'Select Model'}
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
               {selectedModelData?.provider}
             </div>
           </div>
         </div>
-        <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+        <div className="absolute top-full mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
           {models.map((model) => (
             <button
               key={model.id}
@@ -82,14 +87,14 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
                 onModelChange(model.id);
                 setIsOpen(false);
               }}
-              className={`w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                selectedModel === model.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+              className={`w-full px-3 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 ${
+                selectedModel === model.id ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : ''
               }`}
             >
-              <div className="font-medium text-gray-900 dark:text-white">
+              <div className="font-semibold text-gray-900 dark:text-white text-sm">
                 {model.name}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                 {model.provider} • {model.description}
               </div>
             </button>

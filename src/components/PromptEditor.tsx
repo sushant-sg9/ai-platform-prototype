@@ -68,41 +68,43 @@ const PromptEditor: React.FC<PromptEditorProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Template Selector */}
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-          Prompt Editor
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">
+          <span className="hidden sm:inline">Prompt Editor</span>
+          <span className="sm:hidden">Editor</span>
         </h3>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setShowTemplates(!showTemplates)}
-          className="flex items-center gap-2"
+          className="flex items-center gap-1 sm:gap-2 flex-shrink-0"
         >
-          <FileText className="w-4 h-4" />
-          Templates
+          <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Templates</span>
+          <span className="sm:hidden">Templates</span>
         </Button>
       </div>
 
       {/* Template Dropdown */}
       {showTemplates && (
-        <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-4">
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Choose a Template</h4>
+        <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-3 sm:p-4">
+          <h4 className="font-medium text-gray-900 dark:text-white mb-2 sm:mb-3 text-sm sm:text-base">Choose a Template</h4>
           {loadingTemplates ? (
-            <div className="flex items-center gap-2 text-gray-500">
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
               <Loader2 className="w-4 h-4 animate-spin" />
               Loading templates...
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+            <div className="grid grid-cols-1 gap-2 max-h-48 sm:max-h-64 overflow-y-auto">
               {templates.map((template) => (
                 <button
                   key={template.id}
                   onClick={() => loadTemplate(template)}
-                  className="text-left p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="text-left p-2.5 sm:p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
                 >
-                  <div className="font-medium text-gray-900 dark:text-white text-sm">
+                  <div className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">
                     {template.name}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -122,36 +124,36 @@ const PromptEditor: React.FC<PromptEditorProps> = ({
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="w-full h-32 p-4 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+          className="w-full h-24 sm:h-32 p-3 sm:p-4 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 text-sm sm:text-base"
           disabled={isLoading}
         />
         
         {/* Character Counter */}
-        <div className="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400">
+        <div className="absolute bottom-1.5 sm:bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400">
           {value.length} characters
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2">
         <Button
           variant="outline"
           onClick={() => {/* Save template logic */}}
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 order-2 sm:order-1"
           disabled={!value.trim()}
         >
           <Save className="w-4 h-4" />
           Save Template
         </Button>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 order-1 sm:order-2">
+          <span className="hidden sm:block text-sm text-gray-500 dark:text-gray-400 text-right">
             Ctrl/Cmd + Enter to send
           </span>
           <Button
             onClick={handleSubmit}
             disabled={!value.trim() || isLoading}
-            className="flex items-center gap-2"
+            className="flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

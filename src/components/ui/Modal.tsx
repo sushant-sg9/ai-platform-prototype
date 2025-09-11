@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black bg-opacity-50 backdrop-blur-sm"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       role="dialog"
@@ -61,10 +61,10 @@ const Modal: React.FC<ModalProps> = ({
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
           <h2
             id="modal-title"
-            className="text-lg font-semibold text-gray-900 dark:text-white"
+            className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate pr-2"
           >
             {title}
           </h2>
@@ -74,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="p-1.5 sm:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex-shrink-0"
               aria-label="Close modal"
             >
               <X className="w-4 h-4" />
@@ -83,7 +83,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-100px)] sm:max-h-[calc(90vh-120px)]">
           {children}
         </div>
       </div>
