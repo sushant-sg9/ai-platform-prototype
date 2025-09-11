@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Moon, Sun, Bot, Settings, MessageSquare } from 'lucide-react';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import ModelSelector from '@/components/ModelSelector';
@@ -21,6 +21,14 @@ function AIInterface() {
   const [showParameters, setShowParameters] = useState(false);
   const [conversationCount, setConversationCount] = useState(1);
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Start new conversation when model changes
   const handleModelChange = (newModel: string) => {
@@ -230,7 +238,10 @@ function AIInterface() {
                 </h2>
               </div>
               
-              <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto space-y-3 sm:space-y-4 bg-gradient-to-b from-transparent to-gray-50/30 dark:to-gray-900/30">
+              <div 
+                ref={chatContainerRef}
+                className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto space-y-3 sm:space-y-4 bg-gradient-to-b from-transparent to-gray-50/30 dark:to-gray-900/30"
+              >
                 {messages.length === 0 ? (
                   <div className="text-center text-gray-500 dark:text-gray-400 mt-12 sm:mt-16 lg:mt-24 animate-fade-in px-4">
                     <div className="p-3 sm:p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl sm:rounded-2xl w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 flex items-center justify-center shadow-xl">
